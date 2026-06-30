@@ -47,6 +47,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   // Don't advertise the framework/version.
   poweredByHeader: false,
+  // The production host (Passenger/Hostinger) can't run Next's image optimizer
+  // — `sharp` fails to load on the Linux host, so `/_next/image` returns 400 for
+  // every fresh request and all <Image> renders break. Serve the raw files
+  // instead (they return 200 fine); <Image> emits a plain <img> with no resizing.
+  images: { unoptimized: true },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
