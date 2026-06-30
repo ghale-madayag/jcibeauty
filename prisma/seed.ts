@@ -108,12 +108,11 @@ async function main() {
 
   // --- Treatment Services --------------------------------------------------
   const serviceData = [
-    { name: "OxyGeneo 3-in-1 Facial", slug: "oxygeneo-facial", duration: 90, price: 3500, image: "Hydrating Facial.webp", desc: "Exfoliate, infuse, and oxygenate for instant glow." },
-    { name: "Sygmalift Non-Invasive Lifting", slug: "sygmalift-lifting", duration: 60, price: 5000, image: "Anti-Aging Treatment.webp", desc: "Painless ultrasound lifting and contouring." },
-    { name: "Advanced Laser Treatment", slug: "advanced-laser", duration: 45, price: 4500, image: "LED Light Therapy Service.webp", desc: "Target pigmentation, scars, and texture." },
-    { name: "Clinical Signature Facial", slug: "clinical-facial", duration: 60, price: 2800, image: "Acne Clearing Facial.webp", desc: "A customized deep-cleansing clinical facial." },
-    { name: "Chemical Peel", slug: "chemical-peel", duration: 45, price: 2500, image: "Chemical Peel.webp", desc: "Resurface and renew for smoother skin." },
-    { name: "Microdermabrasion", slug: "microdermabrasion", duration: 45, price: 2200, image: "Microdermabrasion.webp", desc: "Gentle exfoliation for a refined complexion." },
+    { name: "Advalight Dual Laser", slug: "advalight-dual-laser", duration: 45, price: 6500, image: "LED Light Therapy Service.webp", desc: "Dual-wavelength medical laser targeting redness, pigmentation, and breakouts while boosting collagen — clearer, more even-toned skin with no downtime." },
+    { name: "Aerolase Neo Elite", slug: "aerolase-neo-elite", duration: 45, price: 5500, image: "LED Light Therapy.webp", desc: "Gentle 1064nm laser facial that clears active acne, fades dark spots, and revives dull skin. Comfortable, needle-free, zero recovery time." },
+    { name: "Sygmalift (lower face)", slug: "sygmalift-lower-face", duration: 60, price: 8500, image: "Anti-Aging Treatment.webp", desc: "Non-invasive ultrasound lifting that sculpts and tightens the lower face and jawline — a needle-free alternative to a surgical facelift." },
+    { name: "Tornado Facial (Dermaclear)", slug: "tornado-facial-dermaclear", duration: 60, price: 2500, image: "Hydrating Facial.webp", desc: "Deep-cleansing hydra-dermabrasion that draws out impurities and floods skin with hydrating serums for an instant, healthy glow." },
+    { name: "Botoskin Rotational HIFU", slug: "botoskin-rotational-hifu", duration: 60, price: 9500, image: "Clinical Excellence.webp", desc: "Rotational HIFU delivers focused ultrasound deep beneath the surface to firm, lift, and smooth — with results that build over the following weeks." },
   ];
 
   const serviceIds: string[] = [];
