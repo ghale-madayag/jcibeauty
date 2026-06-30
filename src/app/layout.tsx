@@ -38,7 +38,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${barlow.variable} ${prompt.variable}`}>
-      <body className="min-h-screen antialiased">
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla,
+          Grammarly) inject attributes like `cz-shortcut-listen` into <body>
+          before React hydrates, causing a harmless attribute mismatch. */}
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
         <Toaster position="top-center" richColors />
       </body>
