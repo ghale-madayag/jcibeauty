@@ -1,0 +1,38 @@
+import nodemailer from "nodemailer";
+
+const host = process.env.MAIL_HOST;
+const port = Number(process.env.MAIL_PORT ?? 587);
+const user = process.env.MAIL_USER;
+const pass = process.env.MAIL_PASS;
+
+export const MAIL_FROM =
+  process.env.MAIL_FROM || "JCI Beauty <no-reply@jcibeauty.com>";
+
+/** Email is "configured" only when host + credentials are present. */
+export const isMailConfigured = Boolean(host && user && pass);
+
+const transporter = isMailConfigured
+  ? nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465, // 465 = implicit TLS; 587/2525 = STARTTLS
+      auth: { user, pass },
+    })
+  : null;
+
+export async function sendMail(opts: {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+}): Promise<{ skipped: boolean }> {
+  if (!transporter) {
+    // Not configured (e.g. Mailtrap creds not pasted yet) — log instead of fail.
+    console.warn(
+      `[mailer] SMTP not configured — skipping email to ${opts.to} ("${opts.subject}")`,
+    );
+    return { skipped: true };
+  }
+  await transporter.sendMail({ from: MAIL_FROM, ...opts });
+  return { skipped: false };
+}

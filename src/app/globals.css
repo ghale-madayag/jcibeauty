@@ -1,26 +1,201 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 
+@custom-variant dark (&:is(.dark *));
+
+/* Lenis smooth scroll (recommended baseline styles). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   JCI Beauty design tokens — "Glowify" beauty e-commerce: bright white base,
+   charcoal text, vivid pink accent (#e61f7f) with a plum secondary (#583fa8)
+   and pale-pink section tints. Barlow display + Prompt body (both sans-serif).
+
+   Note: the brand accent is wired through the legacy `--gold` token so existing
+   `variant="gold"` / `bg-gold` / `text-gold` usages flip to pink site-wide.
+--------------------------------------------------------------------------- */
 :root {
+  --radius: 0.5rem;
+
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #303030;
+
+  --card: #ffffff;
+  --card-foreground: #303030;
+
+  --popover: #ffffff;
+  --popover-foreground: #303030;
+
+  /* Primary = charcoal for dark CTAs / admin surfaces */
+  --primary: #303030;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f2f2f2;
+  --secondary-foreground: #303030;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #636363;
+
+  /* Brand accent (pink) — mapped onto the `gold` token used across the app */
+  --gold: #e61f7f;
+  --gold-foreground: #ffffff;
+  /* Plum secondary accent */
+  --plum: #583fa8;
+  --plum-foreground: #ffffff;
+  /* Soft pale-pink tint for highlighted surfaces */
+  --accent: #faeff2;
+  --accent-foreground: #303030;
+
+  --destructive: oklch(0.58 0.21 27);
+  --destructive-foreground: #ffffff;
+
+  --border: #ececec;
+  --input: #e4e4e4;
+  --ring: #e61f7f;
+}
+
+.dark {
+  --background: #1a1a1a;
+  --foreground: #f2f2f2;
+  --card: #232323;
+  --card-foreground: #f2f2f2;
+  --popover: #232323;
+  --popover-foreground: #f2f2f2;
+  --primary: #f2f2f2;
+  --primary-foreground: #1a1a1a;
+  --secondary: #2c2c2c;
+  --secondary-foreground: #f2f2f2;
+  --muted: #2c2c2c;
+  --muted-foreground: #a8a8a8;
+  --gold: #f0408f;
+  --gold-foreground: #ffffff;
+  --plum: #7b62d1;
+  --plum-foreground: #ffffff;
+  --accent: #3a2330;
+  --accent-foreground: #faeff2;
+  --destructive: oklch(0.62 0.2 27);
+  --destructive-foreground: #f2f2f2;
+  --border: #333333;
+  --input: #333333;
+  --ring: #f0408f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-plum: var(--plum);
+  --color-plum-foreground: var(--plum-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Body = Prompt, headings = Barlow (the `serif` token name is kept so the
+     app's existing `font-serif` heading classes pick up Barlow). */
+  --font-sans: var(--font-prompt), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .container-px {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 1024px) {
+    .container-px {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  .tracking-luxe {
+    letter-spacing: 0.18em;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* Infinite horizontal marquee (track holds two identical copies). */
+  .animate-marquee {
+    animation: marquee 28s linear infinite;
+  }
+  /* Soft shadow for light text sitting over imagery. */
+  .text-shadow-soft {
+    text-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.5),
+      0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
