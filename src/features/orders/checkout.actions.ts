@@ -5,10 +5,10 @@ import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import { toStripeAmount } from "@/lib/money";
 import { validateCoupon } from "@/features/coupons/coupon.service";
+import { getRequestBaseUrl } from "@/lib/app-url";
 import { checkoutSchema, type CheckoutInput } from "./order.schema";
 import { priceCheckout, createOrder, orderService } from "./order.service";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 const CURRENCY = (process.env.NEXT_PUBLIC_CURRENCY || "PHP").toLowerCase();
 
 /**
@@ -16,10 +16,13 @@ const CURRENCY = (process.env.NEXT_PUBLIC_CURRENCY || "PHP").toLowerCase();
  * paths can contain spaces (e.g. "/images/product assets/x.webp"), which are
  * not valid URLs until encoded. Returns undefined if the URL can't be formed.
  */
-function absoluteImage(image: string | null): string[] | undefined {
+function absoluteImage(
+  image: string | null,
+  baseUrl: string,
+): string[] | undefined {
   if (!image) return undefined;
   try {
-    const url = new URL(image, APP_URL).toString();
+    const url = new URL(image, baseUrl).toString();
     // Stripe can't display images it can't reach (e.g. localhost), but only
     // rejects malformed URLs — so we only need a well-formed absolute URL.
     return [url];
@@ -50,6 +53,7 @@ export async function createCheckoutAction(input: CheckoutInput): Promise<{
   }
 
   const order = await createOrder(parsed.data, totals, session?.user?.id);
+  const APP_URL = await getRequestBaseUrl();
 
   // Dev fallback: no Stripe configured -> simulate a successful payment
   // (this also sends the order confirmation email).
@@ -69,7 +73,7 @@ export async function createCheckoutAction(input: CheckoutInput): Promise<{
       unit_amount: toStripeAmount(l.price),
       product_data: {
         name: l.name,
-        images: absoluteImage(l.image),
+        images: absoluteImage(l.image, APP_URL),
       },
     },
   }));

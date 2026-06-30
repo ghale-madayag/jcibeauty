@@ -4,10 +4,10 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 import { toNumber, toStripeAmount } from "@/lib/money";
+import { getRequestBaseUrl } from "@/lib/app-url";
 import { appointmentService } from "./appointment.service";
 import { bookingSchema, type BookingInput } from "./appointment.schema";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 const CURRENCY = (process.env.NEXT_PUBLIC_CURRENCY || "PHP").toLowerCase();
 
 export async function createBookingCheckoutAction(input: BookingInput): Promise<{
@@ -39,6 +39,7 @@ export async function createBookingCheckoutAction(input: BookingInput): Promise<
   }
 
   const price = toNumber(service.price);
+  const APP_URL = await getRequestBaseUrl();
 
   // Dev fallback: no Stripe configured -> confirm without payment.
   if (!stripe || price <= 0) {
