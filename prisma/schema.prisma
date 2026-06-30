@@ -1,13 +1,13 @@
 // JCI Beauty — Prisma schema
 // Appointment booking + e-commerce platform
-// Provider: MySQL
+// Provider: PostgreSQL (Supabase)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
