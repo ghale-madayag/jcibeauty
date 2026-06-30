@@ -208,12 +208,6 @@ export default function LoginPage() {
           Continue
         </Button>
       </form>
-
-      {process.env.NODE_ENV !== "production" && (
-        <p className="mt-6 rounded-md bg-secondary p-3 text-center text-xs text-muted-foreground">
-          Demo admin: admin@jcibeauty.com / admin123
-        </p>
-      )}
     </div>
   );
 }
