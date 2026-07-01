@@ -45,7 +45,14 @@ export const C = {
 
 const SERIF = "Georgia,'Times New Roman',serif";
 const SANS = "Arial,Helvetica,sans-serif";
-const LOGO_URL = absUrl("/images/JCI Beauty.webp");
+
+/**
+ * The logo is embedded as an inline (CID) attachment by the mailer rather than
+ * linked by URL: a hosted URL fails in dev (Mailtrap can't reach localhost) and
+ * `.webp` doesn't render in several clients (e.g. Outlook desktop). The mailer
+ * attaches a PNG under this same cid. Keep this value in sync with mailer.ts.
+ */
+export const LOGO_CID = "jci-logo";
 
 /** Page chrome: logo header, centered title/subtitle, content, brand footer. */
 export function emailShell(opts: {
@@ -68,7 +75,7 @@ export function emailShell(opts: {
     <tr><td align="center">
       <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:${C.sheet};border:1px solid ${C.line};">
         <tr><td align="center" style="padding:30px 24px 18px;border-bottom:1px solid ${C.line};">
-          <img src="${LOGO_URL}" alt="${escapeHtml(SITE.name)}" height="42" style="height:42px;display:block;border:0;"/>
+          <img src="cid:${LOGO_CID}" alt="${escapeHtml(SITE.name)}" height="42" style="height:42px;display:block;border:0;"/>
         </td></tr>
         <tr><td align="center" style="padding:42px 24px 0;">
           <h1 style="margin:0;font-family:${SERIF};font-size:38px;font-weight:400;color:${C.ink};letter-spacing:0.5px;">${escapeHtml(opts.title)}</h1>
