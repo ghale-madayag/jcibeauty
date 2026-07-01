@@ -75,15 +75,7 @@ function ModeCard({
           <h2 className="font-serif text-lg">{title}</h2>
           <p className="mt-1 text-sm text-muted-foreground">{description}</p>
         </div>
-        <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
-          <input
-            type="checkbox"
-            name={`${name}_enabled`}
-            defaultChecked={mode.enabled}
-            className="size-4 accent-gold"
-          />
-          Enabled
-        </label>
+        <ToggleSwitch name={`${name}_enabled`} defaultChecked={mode.enabled} />
       </div>
 
       <div className="mt-5 space-y-4">
@@ -104,5 +96,34 @@ function ModeCard({
 
       {note && <p className="mt-3 text-xs text-muted-foreground">{note}</p>}
     </section>
+  );
+}
+
+/**
+ * iOS-style pill toggle. Wraps a native checkbox (visually hidden but still
+ * focusable and form-submittable as `name=on`) and styles a track + knob via
+ * `peer` utilities — pink when on, gray when off.
+ */
+function ToggleSwitch({
+  name,
+  defaultChecked,
+}: {
+  name: string;
+  defaultChecked: boolean;
+}) {
+  return (
+    <label className="flex shrink-0 cursor-pointer select-none items-center gap-2.5 text-sm font-medium">
+      <span className="relative inline-flex">
+        <input
+          type="checkbox"
+          name={name}
+          defaultChecked={defaultChecked}
+          className="peer sr-only"
+        />
+        <span className="block h-6 w-11 rounded-full bg-muted-foreground/30 transition-colors peer-checked:bg-gold peer-focus-visible:ring-2 peer-focus-visible:ring-ring/50 peer-focus-visible:ring-offset-2" />
+        <span className="pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
+      </span>
+      Enabled
+    </label>
   );
 }
