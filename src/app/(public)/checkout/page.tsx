@@ -30,7 +30,6 @@ export default function CheckoutPage() {
   const mounted = useMounted();
   const items = useCart((s) => s.items);
   const subtotal = useCart((s) => s.subtotal());
-  const clear = useCart((s) => s.clear);
 
   const [discount, setDiscount] = React.useState(0);
   const [couponCode, setCouponCode] = React.useState("");
@@ -84,7 +83,8 @@ export default function CheckoutPage() {
       items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
     });
     if (res.ok && res.url) {
-      clear();
+      // Don't clear the cart here — the customer may cancel on Stripe and come
+      // back. The cart is emptied on the success page after payment is confirmed.
       window.location.href = res.url;
     } else {
       setSubmitting(false);

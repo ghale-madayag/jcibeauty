@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatMoney } from "@/lib/money";
 import { isStripeConfigured } from "@/lib/stripe";
 import { orderService } from "@/features/orders/order.service";
+import { ClearCartOnSuccess } from "@/components/shop/clear-cart-on-success";
 
 export default async function CheckoutSuccessPage({
   searchParams,
@@ -20,6 +21,11 @@ export default async function CheckoutSuccessPage({
 
   return (
     <div className="container-px mx-auto max-w-xl py-24 text-center">
+      {/* Empty the cart only now that checkout succeeded — a real Stripe
+          success carries session_id (or dev fallback resolves an order);
+          cancelling goes to /checkout?canceled=1 and never reaches this page,
+          so the cart survives a cancel. */}
+      {(order || session_id) && <ClearCartOnSuccess />}
       <CheckCircle2 className="mx-auto size-16 text-gold" />
       <h1 className="mt-6 font-serif text-4xl">Thank you!</h1>
       <p className="mt-3 text-muted-foreground">
