@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { formatMoney } from "@/lib/money";
 import { isStripeConfigured } from "@/lib/stripe";
+import { reconcileCheckoutSession } from "@/lib/stripe-reconcile";
 import { appointmentService } from "@/features/appointments/appointment.service";
 
 export default async function BookingSuccessPage({
@@ -14,6 +15,10 @@ export default async function BookingSuccessPage({
   searchParams: Promise<{ appointment?: string; session_id?: string }>;
 }) {
   const { appointment: id, session_id } = await searchParams;
+  // Fallback for a missed/lagging webhook: verify with Stripe and confirm the
+  // booking (+ send its email) before we render, so a real payment never shows
+  // as still "Pending" here.
+  if (session_id) await reconcileCheckoutSession(session_id);
   // Guest booking — gate details on the unguessable Stripe session id (open
   // lookup only in the simulated dev checkout when Stripe is off).
   const appointment = id

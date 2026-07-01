@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatMoney } from "@/lib/money";
 import { isStripeConfigured } from "@/lib/stripe";
+import { reconcileCheckoutSession } from "@/lib/stripe-reconcile";
 import { orderService } from "@/features/orders/order.service";
 import { ClearCartOnSuccess } from "@/components/shop/clear-cart-on-success";
 
@@ -13,6 +14,10 @@ export default async function CheckoutSuccessPage({
   searchParams: Promise<{ order?: string; session_id?: string }>;
 }) {
   const { order: orderNumber, session_id } = await searchParams;
+  // Fallback for a missed/lagging webhook: verify with Stripe and mark the order
+  // paid (+ send its email) before we render, so a real payment isn't left
+  // hanging as unpaid.
+  if (session_id) await reconcileCheckoutSession(session_id);
   // Guest checkout — gate receipt details on the unguessable Stripe session id
   // (open lookup only in the simulated dev checkout when Stripe is off).
   const order = orderNumber
