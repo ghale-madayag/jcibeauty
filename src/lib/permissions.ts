@@ -23,6 +23,7 @@ export const ADMIN_SECTIONS = [
   "staff",
   "coupons",
   "cms",
+  "maintenance",
   "settings",
   "users",
 ] as const;

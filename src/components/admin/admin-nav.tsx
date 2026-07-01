@@ -16,6 +16,7 @@ import {
   LayoutTemplate,
   Settings,
   ShieldCheck,
+  Wrench,
   CircleUser,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -39,6 +40,7 @@ const links: {
   { href: "/admin/coupons", label: "Coupons", icon: Ticket, section: "coupons" },
   { href: "/admin/cms", label: "Homepage CMS", icon: LayoutTemplate, section: "cms" },
   { href: "/admin/users", label: "Users", icon: ShieldCheck, section: "users" },
+  { href: "/admin/maintenance", label: "Maintenance", icon: Wrench, section: "maintenance" },
   { href: "/admin/settings", label: "Settings", icon: Settings, section: "settings" },
 ];
 
